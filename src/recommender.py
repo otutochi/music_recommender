@@ -70,15 +70,37 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     Scores a single song against user preferences.
     Required by recommend_songs() and src/main.py
     """
-    # TODO: Implement scoring logic using your Algorithm Recipe from Phase 2.
-    # Expected return format: (score, reasons)
-    return []
+    score = 0.0
+    reasons = []
+
+    # Genre match: +2.0
+    if song.get("genre", "").lower() == user_prefs.get("genre", "").lower():
+        score += 2.0
+        reasons.append("genre match (+2.0)")
+
+    # Mood match: +1.0
+    if song.get("mood", "").lower() == user_prefs.get("mood", "").lower():
+        score += 1.0
+        reasons.append("mood match (+1.0)")
+
+    # Energy closeness: 0.0–1.0 (closer to user target = higher score)
+    if "energy" in user_prefs and "energy" in song:
+        energy_score = 1.0 - abs(song["energy"] - user_prefs["energy"])
+        score += energy_score
+        reasons.append(f"energy closeness (+{energy_score:.2f})")
+
+    return (score, reasons)
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """
     Functional implementation of the recommendation logic.
     Required by src/main.py
     """
-    # TODO: Implement scoring and ranking logic
-    # Expected return format: (song_dict, score, explanation)
-    return []
+    scored = []
+    for song in songs:
+        score, reasons = score_song(user_prefs, song)
+        explanation = "; ".join(reasons) if reasons else "no matching features"
+        scored.append((song, score, explanation))
+
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return scored[:k]
