@@ -11,23 +11,36 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This project simulates a content-based music recommender. It scores every song in a small catalog against a user's taste profile and returns the top matches with human-readable explanations of why each song was chosen.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world platforms like Spotify combine two main approaches: **collaborative filtering** (finding patterns across millions of users' behavior — plays, skips, saves, playlist adds) and **content-based filtering** (matching song attributes like genre, energy, and mood to a user's known preferences). Our simulation focuses on the content-based side, which is easier to explain, debug, and reason about with a small dataset.
 
-Some prompts to answer:
+### Song Features
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+Each `Song` in `data/songs.csv` carries these attributes:
 
-You can include a simple diagram or bullet list if helpful.
+| Feature | Type | Role in scoring |
+|---------|------|-----------------|
+| `genre` | categorical | Primary taste filter (+2.0 for match) |
+| `mood` | categorical | Secondary taste filter (+1.0 for match) |
+| `energy` | 0.0–1.0 | Closeness to user's target energy |
+| `acousticness` | 0.0–1.0 | Matches `likes_acoustic` preference |
+| `danceability` | 0.0–1.0 | Available for future scoring expansion |
+| `valence` | 0.0–1.0 | Available for future scoring expansion |
+| `tempo_bpm` | ~60–180 | Available for future scoring expansion |
+
+### User Profile
+
+A `UserProfile` stores: `favorite_genre`, `favorite_mood`, `target_energy`, and `likes_acoustic`.
+
+### Algorithm Recipe
+
+1. **Scoring Rule** — For each song, compute: `score = 2.0 × genre_match + 1.0 × mood_match + (1.0 − |song_energy − user_energy|)`. Each term also produces a reason string (e.g., "genre match (+2.0)").
+2. **Ranking Rule** — Score every song in the catalog, sort descending by score, return the top *k* results with their explanations.
 
 ---
 
