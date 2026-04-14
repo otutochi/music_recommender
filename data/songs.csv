@@ -9,3 +9,11 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Golden Hour Memories,Velvet Haze,r&b,nostalgic,0.55,96,0.72,0.70,0.48
+12,Neon Pulse,Circuit Dawn,electronic,euphoric,0.88,140,0.80,0.91,0.07
+13,Late Night Verses,Kid Prism,hip hop,melancholic,0.62,85,0.38,0.74,0.30
+14,Winter Sonata,Clara Bowing,classical,dreamy,0.22,68,0.58,0.30,0.97
+15,Iron Thunder,Shredline,metal,aggressive,0.96,170,0.32,0.52,0.04
+16,Backyard Funk,The Groove Lab,funk,groovy,0.78,112,0.85,0.93,0.25
+17,Dirt Road Sunrise,Amber Trails,country,uplifting,0.60,104,0.76,0.64,0.80
+18,Tropical Moonlight,Sol Caliente,latin,romantic,0.68,100,0.82,0.86,0.42
