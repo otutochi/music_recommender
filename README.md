@@ -91,6 +91,10 @@ pip install -r requirements.txt
 python -m src.main
 ```
 
+### CLI Output
+
+![CLI verification screenshot](public/cli_verification.png)
+
 ### Running Tests
 
 Run the starter tests with:
