@@ -42,6 +42,30 @@ A `UserProfile` stores: `favorite_genre`, `favorite_mood`, `target_energy`, and 
 1. **Scoring Rule** — For each song, compute: `score = 2.0 × genre_match + 1.0 × mood_match + (1.0 − |song_energy − user_energy|)`. Each term also produces a reason string (e.g., "genre match (+2.0)").
 2. **Ranking Rule** — Score every song in the catalog, sort descending by score, return the top *k* results with their explanations.
 
+### Data Flow
+
+```mermaid
+flowchart TD
+    A["data/songs.csv"] -->|load_songs| B["Song Catalog"]
+    C["User Preferences"] --> D
+    subgraph LOOP["Score every song"]
+        B --> D["score_song"]
+        D --> E{"Genre match?"} -->|"+2.0 / +0.0"| L
+        D --> H{"Mood match?"} -->|"+1.0 / +0.0"| L
+        D --> K["1.0 − |Δenergy|"] --> L["Total score + reasons"]
+    end
+    L --> M["Collect all scores"]
+    M -->|sort descending| N["Ranked List"]
+    N -->|top k| O["Recommendations"]
+```
+
+### Expected Biases and Limitations
+
+- **Genre dominance** — Genre match is worth +2.0, while the maximum energy closeness is only +1.0. A song in the right genre but with mismatched energy will still outscore a perfect-energy song in the wrong genre. This could create a "filter bubble" where the system only recommends one genre.
+- **No cross-taste discovery** — A user who likes "chill lofi" will never be shown an "acoustic jazz" track that might feel similar in vibe, because the system compares literal genre strings, not underlying sonic similarity.
+- **Small catalog bias** — With only 18 songs, some genres have just one representative. If that song happens to have extreme energy or mood, the system may unfairly judge the entire genre based on a single example.
+- **Binary acoustic preference** — `likes_acoustic` is a boolean, but real acoustic preference is a spectrum. A user who "somewhat" likes acoustic gets the same treatment as one who strongly prefers it.
+
 ---
 
 ## Getting Started
